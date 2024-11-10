@@ -18,7 +18,7 @@ public class Main {
         boolean solved = solveMaze(maze, 1, 1);
 
         if (solved) {
-            System.out.println("Laberinto solucionado!");
+            System.out.println("Primer intento de laberinto!");
         } else {
             System.out.println("No se pudo solucionar");
         }

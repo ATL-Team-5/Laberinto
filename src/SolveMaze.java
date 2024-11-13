@@ -1,10 +1,31 @@
+import java.util.Scanner;
+
 public class SolveMaze {
     int steps = 0;
 
-    public boolean backtracking(char[][] maze, int row, int col) {
+    public boolean solve(char[][] maze, int row, int col) {
+        Scanner menu = new Scanner(System.in);
+
+        System.out.println("Seleccione un algoritmo para resolver el laberinto");
+        System.out.println(" 1: Backtracking \n 2: Tremaux");
+
+        int choice = menu.nextInt();
+
+        if (choice == 1) {
+            return backtracking(maze, row, col);
+        } else if (choice == 2) {
+            return tremaux(maze, row, col);
+        } else {
+            System.out.println("No se encontro la opcion seleccionada, se tomara 'backtracking' como la opcion por defecto");
+            return backtracking(maze, row, col);
+        }
+    }
+
+    private boolean backtracking(char[][] maze, int row, int col) {
         // Comprobar si encontramos la salida
         if (maze[row][col] == 'E') {
-            System.out.println("Backtracking");
+            System.out.println("Backtracking!");
+            System.out.println("Pasos: " + this.steps);
             return true;
         }
 
@@ -28,10 +49,11 @@ public class SolveMaze {
         return false;
     }
 
-    public boolean tremaux(char[][] maze, int row, int col) {
+    private boolean tremaux(char[][] maze, int row, int col) {
         // Verifica si la posición actual es la salida ('E')
         if (maze[row][col] == 'E') {
             System.out.println("Tremaux");
+            System.out.println("Pasos: " + this.steps);
             return true;
         }
 
@@ -69,7 +91,7 @@ public class SolveMaze {
     }
 
     // Método para verificar si la posición actual es un cruce
-    public static boolean isCrossroad(char[][] maze, int row, int col) {
+    private static boolean isCrossroad(char[][] maze, int row, int col) {
         int paths = 0;
 
         // Verifica los cuatro posibles movimientos: arriba, abajo, izquierda, derecha

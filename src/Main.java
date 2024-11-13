@@ -1,9 +1,11 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        SolveMaze sm = new SolveMaze();
+
         char[][] maze1 = {
                 {'#', 'S', '#', '#', '#'},
                 {'#', ' ', ' ', ' ', '#'},
@@ -11,10 +13,9 @@ public class Main {
                 {'#', '#', ' ', ' ', ' '},
                 {'#', '#', 'E', '#', '#'},
 
-        };
         char[][] maze2 = {
-                {'#', 'S', '#', '#', '#', '#', '#', '#', '#', '#'},
-                {'#', ' ', ' ', ' ', '#', '#', ' ', ' ', '#', '#'},
+                {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
+                {'#', 'S', ' ', ' ', '#', '#', ' ', ' ', '#', '#'},
                 {'#', '#', '#', ' ', '#', '#', '#', ' ', ' ', 'E'},
                 {'#', '#', ' ', ' ', ' ', '#', '#', ' ', '#', '#'},
                 {'#', '#', ' ', '#', '#', ' ', ' ', ' ', '#', '#'},
@@ -62,48 +63,61 @@ public class Main {
 
         if (solved) {
             System.out.println("El laberinto se resolvió correctamente!");
+        boolean solved = sm.backtracking(maze, 1, 1);
+
+        if (solved) {
+            System.out.println("Laberinto solucionado!");
+            System.out.println("Pasos: " + sm.steps);
         } else {
             System.out.println("No se pudo solucionar");
         }
+    }
+}
 
+class TarryMazeSolver {
+    public static List<int[]> solveMaze(int[][] maze, int[] start, int[] end) {
+        int rows = maze.length;
+        int cols = maze[0].length;
+        boolean[][] visited = new boolean[rows][cols];
+        List<int[]> path = new ArrayList<>();
+
+        // Direcciones: Derecha, Abajo, Izquierda, Arriba
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+        int x = start[0], y = start[1];
+        visited[x][y] = true;
+        path.add(new int[]{x, y});
     }
 
-    public static void showMaze(char[][] maze) {
+    public static void printMazeWithPath(int[][] maze, List<int[]> path) {
+        int[][] mazeWithPath = new int[maze.length][maze[0].length];
+
+        // Copiar el laberinto original
         for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[i].length; j++) {
-                System.out.print(" " + maze[i][j] + " ");
+            for (int j = 0; j < maze[0].length; j++) {
+                mazeWithPath[i][j] = maze[i][j];
+            }
+        }
+
+        // Imprimir el laberinto
+        for (int i = 0; i < mazeWithPath.length; i++) {
+            for (int j = 0; j < mazeWithPath[0].length; j++) {
+                if (mazeWithPath[i][j] == 1) {
+                    System.out.print("# "); // Pared
+                } else if (mazeWithPath[i][j] == 2) {
+                    System.out.print(". "); // Camino
+                } else {
+                    System.out.print("  "); // Espacio vacío
+                }
             }
             System.out.println();
         }
     }
-
-    public static boolean solveMaze(char[][] maze, int row, int col) {
-        // Verificar si estamos fuera de los límites del laberinto
-        if (row < 0 || row >= maze.length || col < 0 || col >= maze[0].length) {
-            return false;
+   
+    public static void printPathCoordinates(List<int[]> path) {
+        System.out.println("\nCoordenadas del camino:");
+        for (int[] step : path) {
+            System.out.println("[" + step[0] + ", " + step[1] + "]");
         }
-
-        // Comprobar si encontramos la salida
-        if (maze[row][col] == 'E') {
-            return true;
-        }
-
-        // Comprobar si estamos en una posición válida para movernos
-        if (maze[row][col] != ' ' && maze[row][col] != 'S') {
-            return false;
-        }
-
-        // Marcar la celda actual como parte del camino de la solución
-        maze[row][col] = '.';
-
-        // Intentar moverse en cada dirección: abajo, derecha, arriba, izquierda
-        if (solveMaze(maze, row, col + 1)) return true; // Derecha
-        if (solveMaze(maze, row + 1, col)) return true; // Abajo
-        if (solveMaze(maze, row, col - 1)) return true; // Izquierda
-        if (solveMaze(maze, row - 1, col)) return true; // Arriba
-
-        // Si ninguna dirección funciona, retroceder (desmarcar la celda)
-        maze[row][col] = '*';
-        return false;
     }
 }

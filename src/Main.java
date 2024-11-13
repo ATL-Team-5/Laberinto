@@ -1,8 +1,35 @@
 import java.util.ArrayList;
 import java.util.List;
 
- class TarryMazeSolver {
+public class Main {
+    public static void main(String[] args) {
+        SolveMaze sm = new SolveMaze();
 
+        char[][] maze = {
+                {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
+                {'#', 'S', ' ', ' ', '#', '#', ' ', ' ', '#', '#'},
+                {'#', '#', '#', ' ', '#', '#', '#', ' ', ' ', 'E'},
+                {'#', '#', ' ', ' ', ' ', '#', '#', ' ', '#', '#'},
+                {'#', '#', ' ', '#', '#', ' ', ' ', ' ', '#', '#'},
+                {'#', '#', ' ', '#', '#', ' ', '#', ' ', '#', '#'},
+                {'#', ' ', ' ', ' ', '#', ' ', '#', '#', '#', '#'},
+                {'#', ' ', '#', ' ', '#', ' ', ' ', ' ', ' ', '#'},
+                {'#', '#', '#', ' ', ' ', ' ', '#', '#', ' ', '#'},
+                {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
+        };
+
+        boolean solved = sm.backtracking(maze, 1, 1);
+
+        if (solved) {
+            System.out.println("Laberinto solucionado!");
+            System.out.println("Pasos: " + sm.steps);
+        } else {
+            System.out.println("No se pudo solucionar");
+        }
+    }
+}
+
+class TarryMazeSolver {
     public static List<int[]> solveMaze(int[][] maze, int[] start, int[] end) {
         int rows = maze.length;
         int cols = maze[0].length;
@@ -77,34 +104,15 @@ import java.util.List;
             System.out.println();
         }
     }
-
+   
     public static void printPathCoordinates(List<int[]> path) {
         System.out.println("\nCoordenadas del camino:");
         for (int[] step : path) {
             System.out.println("[" + step[0] + ", " + step[1] + "]");
         }
     }
-
-    public static void main(String[] args) {
-        int[][] maze = {
-                {0, 1, 0, 0, 0},
-                {0, 1, 0, 1, 0},
-                {0, 0, 0, 1, 0},
-                {0, 1, 1, 1, 0},
-                {0, 0, 0, 0, 0}
-        };
-
-        int[] start = {0, 0}; // Inicio
-        int[] end = {4, 4};   // Fin
-
-        List<int[]> solution = solveMaze(maze, start, end);
-
-        if (solution != null) {
-            System.out.println("Camino encontrado:");
-            printMazeWithPath(maze, solution);
-            printPathCoordinates(solution); // Imprimir coordenadas
-        } else {
-            System.out.println("No hay solución para el laberinto.");
-        }
-    }
 }
+
+
+
+
